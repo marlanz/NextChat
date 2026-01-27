@@ -3,7 +3,7 @@
 import z from "zod";
 import { createRoomSchema } from "../schema";
 import { getCurrentUser } from "../lib/getCurrentUser";
-import { createAdminClient, createClient } from "../server";
+import { createAdminClient } from "../server";
 import { redirect } from "next/navigation";
 
 export async function createRoom(unsafeData: z.infer<typeof createRoomSchema>) {
@@ -18,7 +18,7 @@ export async function createRoom(unsafeData: z.infer<typeof createRoomSchema>) {
     return { error: true, message: "User not authenticated" };
   }
 
-  const supabase = await createAdminClient();
+  const supabase = createAdminClient();
   const { data: roomData, error: roomError } = await supabase
     .from("chat_room")
     .insert({ name: data.name, is_public: data.isPublic })
