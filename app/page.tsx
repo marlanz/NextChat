@@ -1,3 +1,6 @@
+import JoinRoomButton from "@/components/JoinRoomButton";
+import LeaveRoomButton from "@/components/LeavRoomButton";
+import LeavRoomButton from "@/components/LeavRoomButton";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -98,12 +101,23 @@ function RoomCard({ id, memberCount, name, isJoined }: RoomCardProps) {
       </CardHeader>
       <CardFooter className="gap-2">
         {isJoined ? (
-          <Button asChild className="grow">
-            <Link href={`/rooms/${id}`}>Enter</Link>
-          </Button>
+          <>
+            <Button asChild className="grow">
+              <Link href={`/rooms/${id}`}>Enter</Link>
+            </Button>
+            <LeaveRoomButton roomId={id} size="sm" variant="destructive">
+              Leave
+            </LeaveRoomButton>
+          </>
         ) : (
-          // leave button
-          <></>
+          <JoinRoomButton
+            roomId={id}
+            variant={"outline"}
+            className="grow"
+            size={"sm"}
+          >
+            Join
+          </JoinRoomButton>
         )}
       </CardFooter>
     </Card>

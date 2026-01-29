@@ -1,0 +1,46 @@
+"use client";
+
+import React, { Component, ComponentProps, ReactNode } from "react";
+import { ActionButton } from "./ui/action-button";
+import { useCurrentUser } from "@/services/hooks/useCurrentUser";
+import { createClient } from "@/services/supabase/client";
+import { useRouter } from "next/navigation";
+
+const JoinRoomButton = ({
+  children,
+  roomId,
+  ...props
+}: Omit<ComponentProps<typeof ActionButton>, "action"> & {
+  roomId: string;
+}) => {
+  const { user } = useCurrentUser();
+  const router = useRouter();
+
+  const handleJoinRoom = async () => {
+    if (user == null) {
+      return { error: true, message: "User not logged in" };
+    }
+
+    const supabase = createClient();
+    const { error } = await supabase.from("chat_room_member").insert({
+      chat_room_id: roomId,
+      member_id: user?.id,
+    });
+
+    if (error) {
+      return { error: true, message: "Failed to join room" };
+    }
+
+    router.refresh();
+    router.push(`/rooms/${roomId}`);
+    return { error: false };
+  };
+
+  return (
+    <ActionButton {...props} action={handleJoinRoom}>
+      {children}
+    </ActionButton>
+  );
+};
+
+export default JoinRoomButton;
