@@ -10,7 +10,7 @@ const NavBar = () => {
 
   return (
     <div className="border-b bg-background">
-      <nav className="container mx-auto py-4  justify-between items-center h-full gap-4 flex">
+      <nav className="container mx-auto py-4 px-8  justify-between items-center h-full gap-4 flex">
         <Link href={"/"} className="text-xl font-bold">
           NextChat
         </Link>
